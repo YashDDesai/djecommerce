@@ -6,7 +6,7 @@ from django.shortcuts import reverse
 from django_countries.fields import CountryField
 
 
-CATEGORY_CHOICES = (
+'''CATEGORY_CHOICES = (
     ('S', 'Shirt'),
     ('SW', 'Sport wear'),
     ('OW', 'Outwear'),
@@ -15,7 +15,19 @@ CATEGORY_CHOICES = (
     ('TR', 'Traditional'),
     ('PR', 'Perfumes'),
 
-)
+)'''
+
+'''class Category():
+    CATEGORY_CHOICES = (
+    ('S', 'Shirt'),
+    ('SW', 'Sport wear'),
+    ('OW', 'Outwear'),
+    ('FW', 'Footwear'),
+    ('AS', 'Accessories'),
+    ('TR', 'Traditional'),
+    ('PR', 'Perfumes'),
+
+)'''
 
 LABEL_CHOICES = (
     ('P', 'primary'),
@@ -38,12 +50,17 @@ class UserProfile(models.Model):
     def __str__(self):
         return self.user.username
 
+class Category(models.Model):
+    category = models.CharField(max_length=255)
+    def __str__(self):
+        return self.category
 
 class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
+    category = models.OneToOneField(Category, on_delete=models.CASCADE)
+    #category = models.CharField(max_length=2)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     slug = models.SlugField()
     description = models.TextField()

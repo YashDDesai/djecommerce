@@ -1,8 +1,10 @@
 from django.urls import path
+from django.conf.urls import url
 from .views import (
     ItemDetailView,
     CheckoutView,
     HomeView,
+    SearchView,
     OrderSummaryView,
     add_to_cart,
     remove_from_cart,
@@ -16,6 +18,7 @@ app_name = 'core'
 
 urlpatterns = [
     path('', HomeView.as_view(), name='home'),
+    path('search/', SearchView.as_view(), name='search'),
     path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('order-summary/', OrderSummaryView.as_view(), name='order-summary'),
     path('product/<slug>/', ItemDetailView.as_view(), name='product'),

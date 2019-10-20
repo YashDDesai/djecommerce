@@ -9,6 +9,7 @@ from django.shortcuts import redirect
 from django.utils import timezone
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserProfile
+from django.db.models import Q
 
 import random
 import string
@@ -345,9 +346,25 @@ class PaymentView(View):
 
 class HomeView(ListView):
     model = Item
-    paginate_by = 10
+    paginate_by = 5
     template_name = "home.html"
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        return context
 
+class SearchView(ListView):
+    model = Item
+    paginate_by=5
+    template_name = "search.html"
+    #query = request.GET.get('q')
+    queryset = Item.objects.filter(title__icontains='shirt')
+
+    '''def get_queryset(self):
+        query = self.request.GET.get('q')
+        object_list = Item.objects.filter(
+            Q(title__icontains=query) 
+        )
+        return object_list'''
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
