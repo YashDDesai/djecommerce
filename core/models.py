@@ -40,6 +40,10 @@ ADDRESS_CHOICES = (
     ('S', 'Shipping'),
 )
 
+class Brand(models.Model):
+    brand = models.CharField(max_length=255)
+    def __str__(self):
+        return self.brand
 
 class UserProfile(models.Model):
     user = models.OneToOneField(
@@ -54,13 +58,15 @@ class Category(models.Model):
     category = models.CharField(max_length=255)
     def __str__(self):
         return self.category
+    class Meta:
+        verbose_name_plural = "Categories"
 
 class Item(models.Model):
     title = models.CharField(max_length=100)
+    brand = models.ForeignKey(Brand, on_delete=models.CASCADE)
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
-    category = models.OneToOneField(Category, on_delete=models.CASCADE)
-    #category = models.CharField(max_length=2)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     slug = models.SlugField()
     description = models.TextField()

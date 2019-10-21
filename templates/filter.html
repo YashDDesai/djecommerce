@@ -54,11 +54,11 @@
 
     <!--Section: Products v.3-->
     <div>
-      <form action="filter/" method="get">
+      <form action="/filter" method="get">
         Brand: 
-        <select name="brand" id="" name='brand'>
+        <select name="brand" id="">
           {% for item in object_list %}
-          <option value="{{item.brand_id}}">{{item.brand}}</option>
+          <option value="{{item.brand}}">{{item.brand}}</option>
           {% endfor %}
           <input type="submit" value="Filter">
         </select>

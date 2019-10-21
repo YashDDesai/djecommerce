@@ -356,15 +356,28 @@ class SearchView(ListView):
     model = Item
     paginate_by=5
     template_name = "search.html"
-    #query = request.GET.get('q')
-    queryset = Item.objects.filter(title__icontains='shirt')
+    def get_queryset(self):
+        # original qs
+        query= self.request.GET['q']
+        
+        # filter by a variable captured from url, for example
+        search_results=Item.objects.filter(title__icontains=query)
+        return search_results
 
-    '''def get_queryset(self):
-        query = self.request.GET.get('q')
-        object_list = Item.objects.filter(
-            Q(title__icontains=query) 
-        )
-        return object_list'''
+
+class FilterView(ListView):
+    model = Item
+    paginate_by=5
+    template_name = "filter.html"
+    
+    def get_queryset(self):
+        # original qs
+        query= self.request.GET['brand']
+        
+        # filter by a variable captured from url, for example
+        filter = Item.objects.filter(brand_id=int(query))
+        return filter
+
 
 class OrderSummaryView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
